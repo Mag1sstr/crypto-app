@@ -9,14 +9,32 @@ import {
   InputNumber,
   Button,
   DatePicker,
+  Result,
 } from "antd";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useCrypto } from "../contexts/CryptoContext";
 
-export default function AddAssetForm() {
+export default function AddAssetForm({ onClose }) {
   const [form] = Form.useForm();
-  const { crypto } = useCrypto();
+  const { crypto, addAsset } = useCrypto();
   const [coin, setCoin] = useState(null);
+  const [submited, setSubmited] = useState(false);
+  const assetRef = useRef();
+
+  if (submited) {
+    return (
+      <Result
+        status="success"
+        title="New Asset Added!"
+        subTitle={`Added ${assetRef.current.amount} of ${coin.name} by price ${assetRef.current.price}`}
+        extra={[
+          <Button onClick={() => onClose(false)} type="primary" key="console">
+            Close
+          </Button>,
+        ]}
+      />
+    );
+  }
   if (!coin) {
     return (
       <Select
@@ -45,11 +63,26 @@ export default function AddAssetForm() {
   }
 
   function onFinish(values) {
-    console.log(values);
+    setSubmited(true);
+    const newAsset = {
+      id: coin.id,
+      amount: values.amount,
+      price: +values.price,
+      date: values.date?.$d ?? new Date(),
+    };
+    assetRef.current = newAsset;
+    addAsset(newAsset);
   }
   function handleAmountChange(value) {
+    const price = form.getFieldValue("price");
     form.setFieldsValue({
-      total: value * coin.price,
+      total: Number(value * price),
+    });
+  }
+  function handlePriceChange(value) {
+    const amount = form.getFieldValue("amount");
+    form.setFieldsValue({
+      total: Number(amount * value),
     });
   }
   return (
@@ -97,7 +130,7 @@ export default function AddAssetForm() {
       </Form.Item>
 
       <Form.Item label="Price" name="price">
-        <InputNumber disabled style={{ width: "100%" }} />
+        <InputNumber onChange={handlePriceChange} style={{ width: "100%" }} />
       </Form.Item>
       <Form.Item label="Date & Time" name="date">
         <DatePicker showTime />
