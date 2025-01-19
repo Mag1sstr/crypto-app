@@ -65,7 +65,7 @@ export default function AppHeader() {
         open={open}
         destroyOnClose
       >
-        <AddAssetForm />
+        <AddAssetForm onClose={setOpen} />
       </Drawer>
 
       <Modal
