@@ -5,15 +5,16 @@ import { fakeFetchCrypto, fetchAssets } from "./api";
 import { cryptoData } from "../data";
 import { capitalize, percentDifference } from "../utils/utils";
 import { CryptoContext } from "../contexts/CryptoContext";
-
-const siderStyle = {
-  padding: "1rem",
-  backgroundColor: "#FFFAFA",
-};
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function AppSider() {
   const { loading, assets } = useContext(CryptoContext);
+  const { dark } = useTheme();
 
+  const siderStyle = {
+    padding: "1rem",
+    backgroundColor: dark ? " #1C1C1C" : "#FFFAFA",
+  };
   if (loading) {
     return <Spin size="large" fullscreen />;
   }
