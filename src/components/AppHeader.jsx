@@ -3,23 +3,25 @@ import { useCrypto } from "../contexts/CryptoContext";
 import { useState } from "react";
 import CoinInfoModal from "./CoinInfoModal";
 import AddAssetForm from "./AddAssetForm";
-
-const headerStyle = {
-  width: "100%",
-  textAlign: "center",
-  height: "90px",
-  padding: "1rem",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  background: "#fff",
-};
+import ThemeToggle from "./ThemeToggle/ThemeToggle";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function AppHeader() {
   const { crypto } = useCrypto();
   const [modal, setModal] = useState(false);
   const [coin, setCoin] = useState(null);
   const [open, setOpen] = useState(false);
+  const { dark } = useTheme();
+  const headerStyle = {
+    width: "100%",
+    textAlign: "center",
+    height: "90px",
+    padding: "1rem",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    background: dark ? "#000" : "#fff",
+  };
 
   function handleSelect(value) {
     setCoin(crypto.find((c) => c.id === value));
@@ -35,7 +37,7 @@ export default function AppHeader() {
         style={{
           width: 250,
         }}
-        value={"press / to open"}
+        value={"Coins"}
         onSelect={handleSelect}
         options={crypto.map((coin) => {
           return {
@@ -55,9 +57,13 @@ export default function AppHeader() {
           </Space>
         )}
       />
-      <Button onClick={showDrawer} type="primary">
-        Add Asset
-      </Button>
+      <div style={{ display: "flex", gap: "1rem" }}>
+        <ThemeToggle />
+        <Button onClick={showDrawer} type="primary">
+          Add Asset
+        </Button>
+      </div>
+
       <Drawer
         width={600}
         title="Add Asset"
