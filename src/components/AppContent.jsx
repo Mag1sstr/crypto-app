@@ -2,21 +2,23 @@ import { Layout, Typography } from "antd";
 import { useCrypto } from "../contexts/CryptoContext";
 import PortfolioChart from "./PortfolioChart";
 import AssetsTable from "./AssetsTable";
-
-const contentStyle = {
-  // textAlign: "center",
-  minHeight: "calc(100vh - 90px)",
-  lineHeight: "120px",
-  color: "#000",
-  backgroundColor: "#FFFAFA",
-  padding: "1rem",
-};
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function AppContent() {
   const { assets, crypto } = useCrypto();
+  const { dark } = useTheme();
+
+  const contentStyle = {
+    // textAlign: "center",
+    minHeight: "calc(100vh - 90px)",
+    lineHeight: "120px",
+    // color: dark ? "#fff" : "#000",
+    backgroundColor: dark ? " #1C1C1C" : "#FFFAFA",
+    padding: "1rem",
+  };
   return (
     <Layout.Content style={contentStyle}>
-      <Typography.Title level={3}>
+      <Typography.Title style={{ color: dark ? "#fff" : "#000" }} level={2}>
         Portfolio:{" "}
         {assets
           .map((asset) => {
