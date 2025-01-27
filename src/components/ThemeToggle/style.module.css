@@ -1,0 +1,29 @@
+.btn {
+  display: flex;
+  align-items: center;
+  width: 70px;
+  height: 34px;
+  background: lightgrey;
+  border-radius: 60px;
+}
+.circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border-radius: 50%;
+  margin-left: 2px;
+  transition: 0.2s ease-out;
+}
+.image {
+  width: 30px;
+}
+.btn.dark .circle {
+  background: lightgrey;
+  margin-left: 38px;
+}
+.btn.dark {
+  background: #fff;
+}
